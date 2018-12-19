@@ -1,25 +1,25 @@
 package foremanpp
-type payload struct {
-    Ppfiles []ppfile  `json:"files"`
+type Payload struct {
+    Ppfiles []Ppfile  `json:"files"`
     Env string `json:"name"` // name of microservice
 }
 
-type ppfile struct {
-    Classes []pclass `json:"classes"`
+type Ppfile struct {
+    Classes []Pclass `json:"classes"`
     Path string `json:"path"`
 }
 
-type pclass struct {
+type Pclass struct {
     Name   string        `json:"name"` // name of the class like klin::install
     Params []interface{} `json:"params"`
 }
 
-type pParams struct {
+type PParams struct {
     Literal interface{} `json:"default_literal"`
     Source string  `json:"default_source"`
     Name string `json:"name"`
 }
-type varParams struct {
+type Varparams struct {
     Source string  `json:"default_source"`
     Name string `json:"name"`
 }

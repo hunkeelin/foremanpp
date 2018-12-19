@@ -9,7 +9,7 @@ import(
     "path/filepath"
     "errors"
 )
-func listinit(rootdir string)([]string,error){ // list the init in each directory
+func Listinit(rootdir string)([]string,error){ // list the init in each directory
     var toreturn []string
     if len(rootdir) == 0 {
         return toreturn,errors.New("Please specify puppet env dir")
@@ -38,11 +38,11 @@ func removecomment(f []byte) []byte{
     }
     return bytes.Join(g,[]byte("\n"))
 }
-func capturevar(s string)(ppfile,error){
-    var toreturn ppfile
-    var returnclass []pclass
-    var returnparams []pParams
-    var returnparamsp []varParams
+func capturevar(s string)(Ppfile,error){
+    var toreturn Ppfile
+    var returnclass []Pclass
+    var returnparams []PParams
+    var returnparamsp []Varparams
     g,err := ioutil.ReadFile(s)
     if err != nil {
         return toreturn,errors.New("No such file " + s)
@@ -75,11 +75,11 @@ func capturevar(s string)(ppfile,error){
     if len(capturecontent) != 2 {
         return toreturn,errors.New("no aval content")
     }
-    var tmpclass pclass
+    var tmPclass Pclass
     if string(captureclass[1]) == "" {
         return toreturn,errors.New("No class info for "+s)
     }
-    tmpclass.Name = string(captureclass[1])
+    tmPclass.Name = string(captureclass[1])
     contents := bytes.Split(capturecontent[1],[]byte(","))
     for _,i := range contents {
         param := bytes.Split(i,[]byte("="))
@@ -87,14 +87,14 @@ func capturevar(s string)(ppfile,error){
             var sswitch bool
             var slength int
             if strings.HasPrefix(string(param[1]),"$"){
-                var tmpparam varParams
+                var tmpparam Varparams
                 tmpparam.Name = string(param[0][1:])
                 tmpparam.Source  = string(param[1])
                 returnparamsp = append(returnparamsp,tmpparam)
                 sswitch = true
                 slength = len(returnparamsp)
             } else{
-                var tmpparam pParams
+                var tmpparam PParams
                 tmpparam.Name = string(param[0][1:])
                 tmpparam.Source  = string(param[1])
                 switch{
@@ -118,17 +118,17 @@ func capturevar(s string)(ppfile,error){
                 for i := range returnparamsp {
                     rparamsInt[i] = returnparamsp[i]
                 }
-                tmpclass.Params = rparamsInt
+                tmPclass.Params = rparamsInt
             } else {
                 rparamsInt := make([]interface{},slength)
                 for i := range returnparams {
                     rparamsInt[i] = returnparams[i]
                 }
-                tmpclass.Params = rparamsInt
+                tmPclass.Params = rparamsInt
             }
         }
     }
-    returnclass = append(returnclass,tmpclass)
+    returnclass = append(returnclass,tmPclass)
     toreturn.Classes = returnclass
     return toreturn,nil
 }
@@ -138,7 +138,7 @@ func shit(){
 /*
 func Smartclassvar(rootdir string)([]Puppetclass,error){
     var toreturn []Puppetclass
-    f,err := listinit(rootdir)
+    f,err := Listinit(rootdir)
     if err != nil {
         return toreturn,err
     }

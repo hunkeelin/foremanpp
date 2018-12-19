@@ -22,8 +22,8 @@ func TestServer(t *testing.T){
     }
 }
 func testweb(w http.ResponseWriter, r *http.Request) {
-    ilist,err := listinit("/data")
-    var parr []ppfile
+    ilist,err := Listinit("/data")
+    var parr []Ppfile
     if err != nil {
         panic(err)
     }
@@ -34,7 +34,7 @@ func testweb(w http.ResponseWriter, r *http.Request) {
         }
         parr = append(parr,p)
     }
-    f := payload {
+    f := Payload {
         Ppfiles: parr,
         Env: "klintestenv",
     }
@@ -46,7 +46,7 @@ func testweb(w http.ResponseWriter, r *http.Request) {
 }
 func TestParse(t *testing.T){
     fmt.Println("testing parse")
-    f,e := listinit("/data")
+    f,e := Listinit("/data")
     if e != nil {
         panic(e)
     }
@@ -70,7 +70,7 @@ func TestSmart(t *testing.T){
 }
 */
 func TestList(t *testing.T){
-    f,e := listinit("/data")
+    f,e := Listinit("/data")
     if e != nil {
         panic(e)
     }

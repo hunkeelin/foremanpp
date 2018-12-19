@@ -38,7 +38,7 @@ func removecomment(f []byte) []byte{
     }
     return bytes.Join(g,[]byte("\n"))
 }
-func capturevar(s string)(Ppfile,error){
+func Capturevar(s string)(Ppfile,error){
     var toreturn Ppfile
     var returnclass []Pclass
     var returnparams []PParams
@@ -143,7 +143,7 @@ func Smartclassvar(rootdir string)([]Puppetclass,error){
         return toreturn,err
     }
     for _,i := range f{
-        p,err := capturevar(i)
+        p,err := Capturevar(i)
         if err == nil {
             toreturn = append(toreturn,p)
         }else {

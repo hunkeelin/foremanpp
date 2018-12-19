@@ -28,7 +28,7 @@ func testweb(w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
     for _,i := range ilist{
-        p,err := capturevar(i)
+        p,err := Capturevar(i)
         if err != nil {
             continue
         }
@@ -51,7 +51,7 @@ func TestParse(t *testing.T){
         panic(e)
     }
     for _,i := range f{
-        p,err := capturevar(i)
+        p,err := Capturevar(i)
         if err != nil {
             continue
         }

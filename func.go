@@ -115,7 +115,11 @@ func Capturevar(s string)(Ppfile,error){
             }
             if slength == 0 {
                 fakeint := make([]interface{},1)
-                fakeint[0] = ""
+                fakeparam := Varparams{
+                    Source: "NA",
+                    Name: "NA",
+                }
+                fakeint[0] = fakeparam
                 tmPclass.Params = fakeint
             } else {
                 if sswitch {
@@ -134,7 +138,11 @@ func Capturevar(s string)(Ppfile,error){
             }
         } else {
             fakeint := make([]interface{},1)
-            fakeint[0] = ""
+            fakeparam := Varparams{
+                Source: "NA",
+                Name: "NA",
+            }
+            fakeint[0] = fakeparam
             tmPclass.Params = fakeint
         }
     }

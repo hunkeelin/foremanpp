@@ -113,6 +113,7 @@ func Capturevar(s string)(Ppfile,error){
                 sswitch = false
                 slength = len(returnparams)
             }
+            fmt.Println(slength)
             if slength == 0 {
                 fmt.Println("filling in fake data")
                 fakeint := make([]interface{},1)

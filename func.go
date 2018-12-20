@@ -43,6 +43,7 @@ func Capturevar(s string)(Ppfile,error){
     var returnclass []Pclass
     var returnparams []PParams
     var returnparamsp []Varparams
+    var tmPclass Pclass
     g,err := ioutil.ReadFile(s)
     if err != nil {
         return toreturn,errors.New("No such file " + s)
@@ -50,6 +51,20 @@ func Capturevar(s string)(Ppfile,error){
     f := removecomment(g)
     reducespace := bytes.Replace(f,[]byte(" "),[]byte(""),-1)
     reducelines := bytes.Replace(reducespace,[]byte("\n"),[]byte(""),-1)
+    capture := regexp.MustCompile("class.*?\\((.*?)\\)")
+    class := regexp.MustCompile("class(.*?)\\(")
+    capturecontent := capture.FindSubmatch(reducelines)
+    captureclass := class.FindSubmatch(reducelines)
+    if len(captureclass) != 2 {
+        return toreturn,errors.New("no aval class params")
+    }
+    if len(capturecontent) != 2 {
+        return toreturn,errors.New("no aval content")
+    }
+    if string(captureclass[1]) == "" {
+        return toreturn,errors.New("No class info for "+s)
+    }
+    contents := bytes.Split(capturecontent[1],[]byte(","))
     var a,b int
     var ab,bb bool
     for i,ele := range reducelines {
@@ -63,24 +78,22 @@ func Capturevar(s string)(Ppfile,error){
         }
     }
     if a < b {
-        return toreturn,errors.New("No class info aval for this class " + s)
-    }
-    capture := regexp.MustCompile("class.*?\\((.*?)\\)")
-    class := regexp.MustCompile("class(.*?)\\(")
-    capturecontent := capture.FindSubmatch(reducelines)
-    captureclass := class.FindSubmatch(reducelines)
-    if len(captureclass) != 2 {
-        return toreturn,errors.New("no aval class params")
-    }
-    if len(capturecontent) != 2 {
-        return toreturn,errors.New("no aval content")
-    }
-    var tmPclass Pclass
-    if string(captureclass[1]) == "" {
-        return toreturn,errors.New("No class info for "+s)
+        class = regexp.MustCompile("class(.*?)\\{")
+        captureclass = class.FindSubmatch(reducelines)
+        tmPclass.Name = string(captureclass[1])
+        fakeint := make([]interface{},1)
+        fakeparams := Varparams {
+            Source: "N/A",
+            Name: "N/A",
+        }
+        fakeint[0] = fakeparams
+        tmPclass.Params = fakeint
+        returnclass = append(returnclass,tmPclass)
+        toreturn.Classes = returnclass
+        fmt.Println("No class info aval for this class " + s)
+        return toreturn,nil
     }
     tmPclass.Name = string(captureclass[1])
-    contents := bytes.Split(capturecontent[1],[]byte(","))
     for _,i := range contents {
         param := bytes.Split(i,[]byte("="))
         if len(param) != 2 {

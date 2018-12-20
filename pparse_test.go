@@ -45,7 +45,7 @@ func testweb(w http.ResponseWriter, r *http.Request) {
     return
 }
 func TestUparse(t *testing.T){
-    f := []string{"init.pp","ntp.pp","fuckyou.pp"}
+    f := []string{"init.pp","ntp.pp","fuckyou.pp","user.pp"}
     var parr []Ppfile
     for _,i := range f {
         p,err := Capturevar(i)

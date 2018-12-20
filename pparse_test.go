@@ -45,11 +45,17 @@ func testweb(w http.ResponseWriter, r *http.Request) {
     return
 }
 func TestUparse(t *testing.T){
-    p,err := Capturevar("init.pp")
-    if err != nil {
-        panic(err)
+    f := []string{"init.pp","ntp.pp","fuckyou.pp"}
+    var parr []Ppfile
+    for _,i := range f {
+        p,err := Capturevar(i)
+        if err != nil {
+            fmt.Println(err)
+            continue
+        }
+        parr = append(parr,p)
     }
-    fmt.Println(p)
+    fmt.Println(parr)
 }
 func TestParse(t *testing.T){
     fmt.Println("testing parse")

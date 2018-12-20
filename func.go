@@ -128,16 +128,15 @@ func Capturevar(s string)(Ppfile,error){
             }
             tmPclass.Params = rparamsInt
         }
-      // else {
-      //      fmt.Println("this got hit",param)
-      //      fakeint := make([]interface{},1)
-      //      fakeparam := PParams{
-      //          Source: "NA",
-      //          Name: "NA",
-      //      }
-      //      fakeint[0] = fakeparam
-      //      tmPclass.Params = fakeint
-      // }
+    }
+    if len(tmPclass.Params) == 0 {
+        fakeint := make([]interface{},1)
+        fakeparams := Varparams {
+            Source: "N/A",
+            Name: "N/A",
+        }
+        fakeint[0] = fakeparams
+        tmPclass.Params = fakeint
     }
     returnclass = append(returnclass,tmPclass)
     toreturn.Classes = returnclass

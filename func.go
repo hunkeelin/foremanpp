@@ -113,28 +113,18 @@ func Capturevar(s string)(Ppfile,error){
                 sswitch = false
                 slength = len(returnparams)
             }
-            if slength == 0 {
-                fakeint := make([]interface{},1)
-                fakeparam := Varparams{
-                    Source: "NA",
-                    Name: "NA",
+            if sswitch {
+                rparamsInt := make([]interface{},slength)
+                for i := range returnparamsp {
+                    rparamsInt[i] = returnparamsp[i]
                 }
-                fakeint[0] = fakeparam
-                tmPclass.Params = fakeint
+                tmPclass.Params = rparamsInt
             } else {
-                if sswitch {
-                    rparamsInt := make([]interface{},slength)
-                    for i := range returnparamsp {
-                        rparamsInt[i] = returnparamsp[i]
-                    }
-                    tmPclass.Params = rparamsInt
-                } else {
-                    rparamsInt := make([]interface{},slength)
-                    for i := range returnparams {
-                        rparamsInt[i] = returnparams[i]
-                    }
-                    tmPclass.Params = rparamsInt
+                rparamsInt := make([]interface{},slength)
+                for i := range returnparams {
+                    rparamsInt[i] = returnparams[i]
                 }
+                tmPclass.Params = rparamsInt
             }
         } else {
             fakeint := make([]interface{},1)

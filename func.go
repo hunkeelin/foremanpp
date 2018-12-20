@@ -83,59 +83,61 @@ func Capturevar(s string)(Ppfile,error){
     contents := bytes.Split(capturecontent[1],[]byte(","))
     for _,i := range contents {
         param := bytes.Split(i,[]byte("="))
-        if len(param) == 2 { // make sure it doesn't parse empty lines due to comma at the end. 
-            var sswitch bool
-            var slength int
-            if strings.HasPrefix(string(param[1]),"$"){
-                var tmpparam Varparams
-                tmpparam.Name = string(param[0][1:])
-                tmpparam.Source  = string(param[1])
-                returnparamsp = append(returnparamsp,tmpparam)
-                sswitch = true
-                slength = len(returnparamsp)
-            } else{
-                var tmpparam PParams
-                tmpparam.Name = string(param[0][1:])
-                tmpparam.Source  = string(param[1])
-                switch{
-                case tmpparam.Source == strings.ToLower("true"):
-                    tmpparam.Literal = true
-                case tmpparam.Source == strings.ToLower("false"):
-                    tmpparam.Literal = false
-                default:
-                    if ij,err := strconv.Atoi(tmpparam.Source); err == nil {
-                        tmpparam.Literal = ij
-                    } else {
-                        tmpparam.Literal = string(bytes.Trim(param[1],"\""))
-                    }
-                }
-                returnparams = append(returnparams,tmpparam)
-                sswitch = false
-                slength = len(returnparams)
-            }
-            if sswitch {
-                rparamsInt := make([]interface{},slength)
-                for i := range returnparamsp {
-                    rparamsInt[i] = returnparamsp[i]
-                }
-                tmPclass.Params = rparamsInt
-            } else {
-                rparamsInt := make([]interface{},slength)
-                for i := range returnparams {
-                    rparamsInt[i] = returnparams[i]
-                }
-                tmPclass.Params = rparamsInt
-            }
+        if len(param) != 2 {
+            continue
         }
-       // } else {
-       //     fakeint := make([]interface{},1)
-       //     fakeparam := Varparams{
-       //         Source: "NA",
-       //         Name: "NA",
-       //     }
-       //     fakeint[0] = fakeparam
-       //     tmPclass.Params = fakeint
-       // }
+        var sswitch bool
+        var slength int
+        if strings.HasPrefix(string(param[1]),"$"){
+            var tmpparam Varparams
+            tmpparam.Name = string(param[0][1:])
+            tmpparam.Source  = string(param[1])
+            returnparamsp = append(returnparamsp,tmpparam)
+            sswitch = true
+            slength = len(returnparamsp)
+        } else{
+            var tmpparam PParams
+            tmpparam.Name = string(param[0][1:])
+            tmpparam.Source  = string(param[1])
+            switch{
+            case tmpparam.Source == strings.ToLower("true"):
+                tmpparam.Literal = true
+            case tmpparam.Source == strings.ToLower("false"):
+                tmpparam.Literal = false
+            default:
+                if ij,err := strconv.Atoi(tmpparam.Source); err == nil {
+                    tmpparam.Literal = ij
+                } else {
+                    tmpparam.Literal = string(bytes.Trim(param[1],"\""))
+                }
+            }
+            returnparams = append(returnparams,tmpparam)
+            sswitch = false
+            slength = len(returnparams)
+        }
+        if sswitch {
+            rparamsInt := make([]interface{},slength)
+            for i := range returnparamsp {
+                rparamsInt[i] = returnparamsp[i]
+            }
+            tmPclass.Params = rparamsInt
+        } else {
+            rparamsInt := make([]interface{},slength)
+            for i := range returnparams {
+                rparamsInt[i] = returnparams[i]
+            }
+            tmPclass.Params = rparamsInt
+        }
+      // else {
+      //      fmt.Println("this got hit",param)
+      //      fakeint := make([]interface{},1)
+      //      fakeparam := PParams{
+      //          Source: "NA",
+      //          Name: "NA",
+      //      }
+      //      fakeint[0] = fakeparam
+      //      tmPclass.Params = fakeint
+      // }
     }
     returnclass = append(returnclass,tmPclass)
     toreturn.Classes = returnclass

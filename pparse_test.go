@@ -44,6 +44,13 @@ func testweb(w http.ResponseWriter, r *http.Request) {
     }
     return
 }
+func TestUparse(t *testing.T){
+    p,err := Capturevar("init.pp")
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(p)
+}
 func TestParse(t *testing.T){
     fmt.Println("testing parse")
     f,e := Listinit("/data")

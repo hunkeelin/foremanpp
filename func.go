@@ -114,6 +114,7 @@ func Capturevar(s string)(Ppfile,error){
                 slength = len(returnparams)
             }
             if slength == 0 {
+                fmt.Println("filling in fake data")
                 fakeint := make([]interface{},1)
                 fakeint[0] = ""
                 tmPclass.Params = fakeint

@@ -126,15 +126,16 @@ func Capturevar(s string)(Ppfile,error){
                 }
                 tmPclass.Params = rparamsInt
             }
-        } else {
-            fakeint := make([]interface{},1)
-            fakeparam := Varparams{
-                Source: "NA",
-                Name: "NA",
-            }
-            fakeint[0] = fakeparam
-            tmPclass.Params = fakeint
         }
+       // } else {
+       //     fakeint := make([]interface{},1)
+       //     fakeparam := Varparams{
+       //         Source: "NA",
+       //         Name: "NA",
+       //     }
+       //     fakeint[0] = fakeparam
+       //     tmPclass.Params = fakeint
+       // }
     }
     returnclass = append(returnclass,tmPclass)
     toreturn.Classes = returnclass
